@@ -12,13 +12,13 @@
 
 class PayuValidationModuleFrontController extends ModuleFrontController
 {
-	public $objPayu;
 	/*
 	 * @see FrontController::postProcess()
 	*/
 	public function postProcess()
 	{
-		$reference = $_GET['PayUReference'];
+		//$reference = $_GET['PayUReference'];
+		$reference = Tools::getValue('PayUReference');
 		$returnData = $this->module->getSoapTransaction($reference);
 		$cart = $this->context->cart;
 		$currency = $this->context->currency;
@@ -30,8 +30,8 @@ class PayuValidationModuleFrontController extends ModuleFrontController
 		{
 			if(is_array($returnData) && count($returnData) > 0 && isset($returnData['return']) && is_array($returnData['return']))
 			{
-				$returnCode = (isset($returnData['return']['resultCode']) && $returnData['return']['resultCode'] != '')? $returnData['return']['resultCode'] : 1;
-				$transaction_state = (isset($returnData['return']['transactionState']) && $returnData['return']['transactionState'] != '')? $returnData['return']['transactionState'] : '';
+				$returnCode = (isset($returnData['return']['resultCode']) && $returnData['return']['resultCode'] != '') ? $returnData['return']['resultCode'] : 1;
+				$transaction_state = (isset($returnData['return']['transactionState']) && $returnData['return']['transactionState'] != '') ? $returnData['return']['transactionState'] : '';
 					
 				switch($returnCode)
 				{
@@ -51,9 +51,10 @@ class PayuValidationModuleFrontController extends ModuleFrontController
 						//Successfull Payment
 						$total = 0;
 						$total_to_pay = (float)$cart->getOrderTotal(true, Cart::BOTH);
-						$amount_paid = (float)($returnData['return']['paymentMethodsUsed']['amountInCents'] / 100);
+						//$amount_paid = (float)($returnData['return']['paymentMethodsUsed']['amountInCents'] / 100);
+						$amount_paid = Tools::ps_round(Tools::convertPrice($returnData['return']['paymentMethodsUsed']['amountInCents'] / 100, $currency->id, false), 2);
 						$mailVars = array(
-								'transaction_id' => $returnData['return']['payUReference'],
+							'transaction_id' => $returnData['return']['payUReference'],
 						);
 						
 						if($transaction_state === 'SUCCESSFUL')
@@ -70,20 +71,6 @@ class PayuValidationModuleFrontController extends ModuleFrontController
 							$this->module->validateOrder($cart->id, Configuration::get('PS_OS_PAYMENT'), $total, $this->module->displayName, NULL, $mailVars, (int)$currency->id, false, $customer->secure_key);
 							$this->display_column_left = false;
 							$this->context->smarty->assign(array(
-									'hide_left_column' => $this->display_column_left,
-									'total_paid' => Tools::ps_round(Tools::convertPrice($returnData['return']['paymentMethodsUsed']['amountInCents'] / 100, $currency->id, false), 2),
-									'cardInfo' => $returnData['return']['paymentMethodsUsed']['information'],
-									'name_on_card' => $returnData['return']['paymentMethodsUsed']['nameOnCard'],
-									'card_number' => $returnData['return']['paymentMethodsUsed']['cardNumber'],
-									'state' => $returnData['return']['transactionState'],
-									'payu_ref' => $returnData['return']['payUReference'],
-							));
-							return $this->setTemplate('confirmation.tpl');
-						}
-						break;
-
-					default:
-						$this->context->smarty->assign(array(
 								'hide_left_column' => $this->display_column_left,
 								'total_paid' => Tools::ps_round(Tools::convertPrice($returnData['return']['paymentMethodsUsed']['amountInCents'] / 100, $currency->id, false), 2),
 								'cardInfo' => $returnData['return']['paymentMethodsUsed']['information'],
@@ -91,16 +78,26 @@ class PayuValidationModuleFrontController extends ModuleFrontController
 								'card_number' => $returnData['return']['paymentMethodsUsed']['cardNumber'],
 								'state' => $returnData['return']['transactionState'],
 								'payu_ref' => $returnData['return']['payUReference'],
+							));
+							return $this->setTemplate('confirmation.tpl');
+						}
+						break;
+
+					default:
+						$this->context->smarty->assign(array(
+							'hide_left_column' => $this->display_column_left,
+							'total_paid' => Tools::ps_round(Tools::convertPrice($returnData['return']['paymentMethodsUsed']['amountInCents'] / 100, $currency->id, false), 2),
+							'cardInfo' => $returnData['return']['paymentMethodsUsed']['information'],
+							'name_on_card' => $returnData['return']['paymentMethodsUsed']['nameOnCard'],
+							'card_number' => $returnData['return']['paymentMethodsUsed']['cardNumber'],
+							'state' => $returnData['return']['transactionState'],
+							'payu_ref' => $returnData['return']['payUReference'],
 						));
 						return $this->setTemplate('failed.tpl');
 						break;
-							
 				}
 			}
-			else
-			{
-				return $this->setTemplate('cancel.tpl');
-			}
 		}
+		return $this->setTemplate('cancel.tpl');
 	}
 }
