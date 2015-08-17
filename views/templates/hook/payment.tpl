@@ -16,7 +16,7 @@
 	{else}
 		<img src="{$this_path_pu}payu.gif" alt="{l s='Pay with Credit/Debit Card' mod='payu'}" />
 		{l s='An error was encountered. Please contact our ' mod='payu'}
-		
+		<a href="{$link->getPageLink('contact', true)|escape:'html'}" style="color:#317fd8">{l s='CUSTOMER CARE.' mod='payu'}</a>
 	{/if}
 </p>
  
