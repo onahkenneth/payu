@@ -9,7 +9,7 @@
 *  Property of NetCraft DevOps
 *}
 
-<p>{l s='Your order on ' mod='payU'} <span class="bold">{$shop_name}</span> {l s=' has Falied.' mod='payU'}
-	<br /><br />{l s='Please contact our ' mod='bankwire'} 
-	<a href="{$link->getPageLink('contact', true)|escape:'html'}" style="color:#317fd8">{l s='CUSTOMER CARE.' mod='bankwire'}</a>
+<p>{l s='Your order on ' mod='payU'} <span class="bold">{$shop_name}</span> {l s=' has failed.' mod='payU'}
+	<br /><br />{l s='Please contact our ' mod='payU'} 
+	<a href="{$link->getPageLink('contact', true)|escape:'html'}" style="color:#317fd8">{l s='CUSTOMER CARE.' mod='payU'}</a>
 </p>
