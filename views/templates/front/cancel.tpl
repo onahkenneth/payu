@@ -8,7 +8,6 @@
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  Property of NetCraft DevOps
 *}
-
 <p>
 	{l s='Your order on ' mod='payu'} <span class="bold">{$shop_name}</span> {l s=' has failed.' mod='payu'}
 	<br /><br />
