@@ -25,9 +25,12 @@
 		<br /><br />
 		- {l s='PayU Reference: ' mod='payu'}  <strong>{if $payu_ref}{$payu_ref}{else}___________{/if}</strong>
 			
-		<br /><br /> <strong>{l s='Awesome!!! Your order has been processed.' mod='payu'}</strong>
-		<br /><br />{l s='An email has been sent with information about your order.' mod='payu'}
-		<br /><br />{l s='If you have any questions or concerns, please contact our' mod='payu'} 
+		<br /><br /> 
+		<strong>{l s='Awesome!!! Your order has been processed.' mod='payu'}</strong>
+		<br /><br />
+		{l s='An email has been sent with information about your order.' mod='payu'}
+		<br /><br />
+		{l s='If you have any questions or concerns, please contact our ' mod='payu'} 
 		<a href="{$link->getPageLink('contact', true)|escape:'html'}" style="color:#317fd8">{l s='CUSTOMER CARE.' mod='payu'}</a>
 	</p>
 </div>
