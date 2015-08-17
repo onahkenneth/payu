@@ -36,9 +36,10 @@ class PayuPaymentModuleFrontController extends ModuleFrontController
 				$authorized = true;
 				break;
 			}
-			if (!$authorized)
-				die($this->module->l('This payment method is not available.', 'payment'));
-			
+			if (!$authorized) {
+				//die($this->module->l('This payment method is not available.', 'payment'));
+				Tools::redirect('index.php?controller=order&step=1');
+			}
 			$customer = new Customer($cart->id_customer);
 			if (!Validate::isLoadedObject($customer))
 				Tools::redirect('index.php?controller=order&step=1');
