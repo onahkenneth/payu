@@ -13,13 +13,17 @@
 {include file="$tpl_dir./breadcrumb.tpl"}
 {$hide_left_column}
 <div style="margin: 0 10px 10px 50px">
-	<p>{l s='Your order on' mod='payu'} <span class="bold">{$shop_name}</span> {l s='is complete and your payment was ' mod='payu'}<span class="bold">{$state}</span>
+	<p>{l s='Your order on ' mod='payu'} <span class="bold">{$shop_name}</span> {l s=' is complete and your payment was ' mod='payu'}<span class="bold">{$state}</span>
 		<h3>{l s='Payment details ' mod='payu'}</h3>
 		-{l s=' Amount: ' mod='payu'} <span class="price"> <strong>R{$total_paid}</strong></span>
-		<br /><br />- {l s='Card: ' mod='payu'}  <strong>{if $cardInfo}{$cardInfo}{else}___________{/if}</strong>
-		<br /><br />- {l s='Name on card: ' mod='payu'}  <strong>{if $name_on_card}{$name_on_card}{else}___________{/if}</strong>
-		<br /><br />- {l s='Card Number: ' mod='payu'}  <strong>{if $card_number}{$card_number}{else}___________{/if}</strong>
-		<br /><br />- {l s='PayU Reference: ' mod='payu'}  <strong>{if $payu_ref}{$payu_ref}{else}___________{/if}</strong>
+		<br /><br />
+		- {l s='Card: ' mod='payu'}  <strong>{if $cardInfo}{$cardInfo}{else}___________{/if}</strong>
+		<br /><br />
+		- {l s='Name on card: ' mod='payu'}  <strong>{if $name_on_card}{$name_on_card}{else}___________{/if}</strong>
+		<br /><br />
+		- {l s='Card Number: ' mod='payu'}  <strong>{if $card_number}{$card_number}{else}___________{/if}</strong>
+		<br /><br />
+		- {l s='PayU Reference: ' mod='payu'}  <strong>{if $payu_ref}{$payu_ref}{else}___________{/if}</strong>
 			
 		<br /><br /> <strong>{l s='Awesome!!! Your order has been processed.' mod='payu'}</strong>
 		<br /><br />{l s='An email has been sent with information about your order.' mod='payu'}
