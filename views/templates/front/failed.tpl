@@ -14,16 +14,21 @@
 {$hide_left_column}
 
 <div style="margin: 0 10px 10px 50px">
-	<p>{l s='Your order on' mod='payu'} <span class="bold">{$shop_name}</span> {l s='failed.' mod='payu'}
+	<p>{l s='Your order on ' mod='payu'} <span class="bold">{$shop_name}</span> {l s=' failed.' mod='payu'}
 	
 		<h3>{l s='Payment details ' mod='payu'}</h3>
 		-{l s=' Amount: ' mod='payu'} <span class="price"> <strong>R{$total_paid}</strong></span>
-		<br /><br />- {l s='Card: ' mod='payu'}  <strong>{if $cardInfo}{$cardInfo}{else}___________{/if}</strong>
-		<br /><br />- {l s='Name on card: ' mod='payu'}  <strong>{if $name_on_card}{$name_on_card}{else}___________{/if}</strong>
-		<br /><br />- {l s='Card Number: ' mod='payu'}  <strong>{if $card_number}{$card_number}{else}___________{/if}</strong>
-		<br /><br />- {l s='PayU Reference: ' mod='payu'}  <strong>{if $payu_ref}{$payu_ref}{else}___________{/if}</strong>
+		<br /><br />
+		- {l s='Card: ' mod='payu'}  <strong>{if $cardInfo}{$cardInfo}{else}___________{/if}</strong>
+		<br /><br />
+		- {l s='Name on card: ' mod='payu'}  <strong>{if $name_on_card}{$name_on_card}{else}___________{/if}</strong>
+		<br /><br />
+		- {l s='Card Number: ' mod='payu'}  <strong>{if $card_number}{$card_number}{else}___________{/if}</strong>
+		<br /><br />
+		- {l s='PayU Reference: ' mod='payu'}  <strong>{if $payu_ref}{$payu_ref}{else}___________{/if}</strong>
 
-		<br /><br />{l s='If you have any questions or concerns, please contact our' mod='bankwire'} 
+		<br /><br />
+		{l s='If you have any questions or concerns, please contact our ' mod='payu'} 
 		<a href="{$link->getPageLink('contact', true)|escape:'html'}" style="color:#317fd8">{l s='CUSTOMER CARE.' mod='bankwire'}</a>
 	</p>
 </p>
