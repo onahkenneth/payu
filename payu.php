@@ -43,7 +43,7 @@ class payu extends PaymentModule
 		OR !Configuration::updateValue('PAYU_SOAP_USERNAME', 'Staging Integration Store 3')
 		OR !Configuration::updateValue('PAYU_SOAP_PASSWORD', 'WSAUFbw6')
 		OR !Configuration::updateValue('PAYU_PAYMENT_METHOD', 'CREDITCARD, LOYALTY, WALLET, DISCOVERY MILES, GLOBAL PAY, DEBIT CARD, EBUCKS, PAYPAL')
-		OR !Configuration::updateValue('PAYU_WHERE_TO_PAY', '')
+		//OR !Configuration::updateValue('PAYU_WHERE_TO_PAY', '')
 		OR !Configuration::updateValue('PAYU_INVOICE', '')
 		OR !Configuration::updateValue('PAYU_BILLING_CURRENCY', 'ZAR')
 		OR !Configuration::updateValue('PAYU_SANDBOX', 1)
@@ -63,7 +63,7 @@ class payu extends PaymentModule
 		OR !Configuration::deleteByName('PAYU_SANDBOX')
 		OR !Configuration::deleteByName('CONFIRMATION_URL')
 		OR !Configuration::deleteByName('PAYU_PAYMENT_METHOD')
-		OR !Configuration::deleteByName('PAYU_WHERE_TO_PAY')
+		//OR !Configuration::deleteByName('PAYU_WHERE_TO_PAY')
 		OR !Configuration::deleteByName('PAYU_INVOICE')
 		OR !Configuration::deleteByName('PAYU_BILLING_CURRENCY')
 		OR !Configuration::deleteByName('PAYU_TRANSACTION_TYPE')
@@ -114,7 +114,7 @@ class payu extends PaymentModule
 				Configuration::updateValue('PAYU_SOAP_USERNAME', strval($_POST['soap_username']));
 				Configuration::updateValue('PAYU_SOAP_PASSWORD', strval($_POST['soap_password']));
 				Configuration::updateValue('PAYU_SANDBOX', intval($_POST['sandbox']));
-				Configuration::updateValue('PAYU_WHERE_TO_PAY', strval($_POST['where_to_pay']));
+				//Configuration::updateValue('PAYU_WHERE_TO_PAY', strval($_POST['where_to_pay']));
 				Configuration::updateValue('PAYU_PAYMENT_METHOD', strval($_POST['payment_method']));
 				Configuration::updateValue('PAYU_BILLING_CURRENCY', strval($_POST['billing_Currency']));
 				Configuration::updateValue('PAYU_INVOICE', strval($_POST['payU_invoice_description_prepend']));
@@ -160,9 +160,9 @@ class payu extends PaymentModule
 		$this->_html .= '
 				<div style="float: right; width: 440px; height: 150px; border: dashed 1px #666; padding: 8px; margin-left: 12px;">
 				<h2>'.$this->l('Open/Access your payU Account').'</h2>
-						<div style="clear: both;"></div></b><br />
+						<div style="clear: both;"></div>
 						<p>'.$this->l('Click on the payU Logo Below to register or edit your payU Account').'</p>
-								<p style="text-align: center;"><a href="https://www.payu.co.za/signup.do"><img src="../modules/payu/payu.gif" alt="payU" style="margin-top: 12px;" /></a></p>
+								<p style="text-align: center;"><a target="_blank" href="https://www.payu.co.za/signup.do"><img src="../modules/payu/payu.gif" alt="payU" style="margin-top: 12px;" /></a></p>
 								<div style="clear: right;"></div>
 								</div>
 								<b></b><br />
@@ -176,7 +176,7 @@ class payu extends PaymentModule
 	{
 		$conf = Configuration::getMultiple(array('PAYU_MERCHANT_REF', 'PAYU_SAFE_KEY', 'PAYU_SOAP_USERNAME', 'PAYU_SOAP_PASSWORD', 'PAYU_SANDBOX','PAYU_WHERE_TO_PAY','PAYU_PAYMENT_METHOD','PAYU_BILLING_CURRENCY','PAYU_INVOICE'));
 			
-		$where_to_pay = array_key_exists('where_to_pay', $_POST) ? $_POST['where_to_pay'] : (array_key_exists('PAYU_WHERE_TO_PAY', $conf) ? $conf['PAYU_WHERE_TO_PAY'] : '');
+		//$where_to_pay = array_key_exists('where_to_pay', $_POST) ? $_POST['where_to_pay'] : (array_key_exists('PAYU_WHERE_TO_PAY', $conf) ? $conf['PAYU_WHERE_TO_PAY'] : '');
 		$payment_method = array_key_exists('payment_method', $_POST) ? $_POST['payment_method'] : (array_key_exists('PAYU_PAYMENT_METHOD', $conf) ? $conf['PAYU_PAYMENT_METHOD'] : '');
 		$billing_Currency = array_key_exists('billing_Currency', $_POST) ? $_POST['billing_Currency'] : (array_key_exists('PAYU_BILLING_CURRENCY', $conf) ? $conf['PAYU_BILLING_CURRENCY'] : '');
 		$payU_invoice_description_prepend = array_key_exists('payU_invoice_description_prepend', $_POST) ? $_POST['payU_invoice_description_prepend'] : (array_key_exists('PAYU_INVOICE', $conf) ? $conf['PAYU_INVOICE'] : '');
@@ -191,9 +191,6 @@ class payu extends PaymentModule
 				<form action="'.$_SERVER['REQUEST_URI'].'" method="post" style="clear: both;">
 						<fieldset>
 						<legend><img src="../img/admin/contact.gif" />'.$this->l('Settings').'</legend>
-									
-								<label>'.$this->l('Where to Pay.').'</label>
-										<div class="margin-form"><input type="text" size="40" name="where_to_pay" value="'.htmlentities($where_to_pay, ENT_COMPAT, 'UTF-8').'" /> * </div>
 													
 												<label>'.$this->l('Merchant Reference.').'</label>
 														<div class="margin-form"><input type="text" size="40" name="merchant_ref" value="'.htmlentities($merchant_ref, ENT_COMPAT, 'UTF-8').'" /> * </div>
@@ -418,22 +415,6 @@ class payu extends PaymentModule
 			return self::$soapClient = $soap_client;
 		}
 		return self::$soapClient;
-	}
-
-	private function _updatePaymentStatusOfOrder($id_order,$params)
-	{
-			
-		$objOrder = new Order($id_order);
-			
-		$history = new OrderHistory();
-		$history->id_order = (int)$objOrder->id;
-
-		$history->changeIdOrderState((int)Configuration::get('PS_OS_PAYMENT'), (int)($objOrder->id)); //order status=3
-
-		Db::getInstance()->execute('
-				insert into `'._DB_PREFIX_.'order_history` (id_order_state,id_order,id_employee,date_add) values ("'.(int)Configuration::get('PS_OS_PAYMENT').'","'.(int)($objOrder->id).'","'.$params['objOrder']->id_customer.'","'.date("Y-m-d H:i:s").'")');
-
-		return true;
 	}
 }
 ?>
